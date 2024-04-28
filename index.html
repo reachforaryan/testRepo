@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Read File and Copy Content</title>
+</head>
+<body>
+    <input type="file" id="fileInput">
+    <button id="copyFileContentButton">Read File and Copy Content</button>
+
+    <script>
+        document.getElementById('copyFileContentButton').addEventListener('click', function() {
+            const fileInput = document.getElementById('fileInput');
+            const file = fileInput.files[0];
+
+            if (file) {
+                const reader = new FileReader();
+
+                reader.onload = function(event) {
+                    const fileContent = event.target.result;
+                    copyToClipboard(fileContent);
+                };
+
+                reader.onerror = function(event) {
+                    console.error('Error reading file:', event.target.error);
+                };
+
+                reader.readAsText(file);
+            } else {
+                console.error('No file selected');
+            }
+        });
+
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text)
+                .then(() => {
+                    console.log('File content copied to clipboard:', text);
+                    alert('File content copied to clipboard!');
+                })
+                .catch(err => {
+                    console.error('Error copying file content to clipboard:', err);
+                    alert('Error copying file content to clipboard. Please try again.');
+                });
+        }
+    </script>
+</body>
+</html>
